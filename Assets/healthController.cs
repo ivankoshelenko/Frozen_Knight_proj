@@ -32,6 +32,7 @@ namespace resources
             character = GetComponent<Player>();
             cold = GetComponent<ColdController>();
             timeUntillRecovery = RecoveryTime;
+            UpdateHealth(1);
         }
 
 

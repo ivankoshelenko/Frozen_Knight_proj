@@ -11,7 +11,7 @@ namespace resources
         [Header("Hunger main parameters")]
         public float playerHunger = 100.0f;
         [SerializeField]
-        private float maxHunger = 100f;
+        public float maxHunger = 100f;
 
         public float hungerSpeed = 0.5f;
 
@@ -41,7 +41,7 @@ namespace resources
                 Debug.Log("food");
             }
         }
-        private void EatFood(float nutrition)
+        public void EatFood(float nutrition)
         {
             playerHunger += nutrition;
             if (playerHunger > maxHunger)

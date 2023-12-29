@@ -11,7 +11,7 @@ namespace monsters
     {
         public Transform target;
         NavMeshAgent agent;
-        public enum States { Patrol, Attack, Follow }
+        public enum States { Patrol, Attack, Follow, Die }
         public States currentState;
 
         public Transform[] wayPoints;
@@ -34,6 +34,12 @@ namespace monsters
         private bool freezeRotation = false;
         public Animator animator;
         private AnimStates m_anim;
+        public float monsterhealth = 100f;
+        private float deathtimer = 0f;
+        public float deathtime = 0.5f;
+        public GameObject droppedFood;
+        public ResourceManager manager;
+
         private AnimStates anim
         { 
             set
@@ -43,17 +49,17 @@ namespace monsters
                     switch (m_anim)
                     {
                         case AnimStates.Idle:
-                            Debug.Log(m_anim);
+                            //Debug.Log(m_anim);
                             animator.Play("MushroomIdle");
                             break;
                         case AnimStates.Attack:
                             animator.Play("MushroomAttack");
-                            Debug.Log(m_anim);
+                            //Debug.Log(m_anim);
 
                             break;
                         case AnimStates.Walk:
                             animator.Play("MushroomRun");
-                            Debug.Log(m_anim);
+                            //Debug.Log(m_anim);
                             break;
                         case AnimStates.Die:
                             animator.Play("MushroomDeath");
@@ -72,7 +78,7 @@ namespace monsters
             agent.updateRotation = false;
             agent.updateUpAxis = false;
         }
-        private void OnCollisionEnter2D(Collision2D other)
+        private void OnnTriggerEnter2D(Collision2D other)
         {
             //if (!other.gameObject.TryGetComponent<Player>(out var player)) return;
             //{
@@ -100,6 +106,11 @@ namespace monsters
                     break;
                 case States.Follow:
                     Follow();
+                    break;
+                case States.Die:
+                    attackzone.gameObject.SetActive(false);
+                    Die();
+                    Debug.Log("Death");
                     break;
             }
         }
@@ -144,7 +155,8 @@ namespace monsters
             if (ready & atkTimer <= attacktime)
             {
                 anim = AnimStates.Attack;
-                attackzone.gameObject.SetActive(true);
+                if(!attackzone.gotDamaged)
+                    attackzone.gameObject.SetActive(true);
                 atkTimer += Time.deltaTime;
                 if (atkTimer >= attacktime)
                 {
@@ -161,6 +173,7 @@ namespace monsters
                 currentState = States.Follow;
                 freezeRotation = false;
                 anim = AnimStates.Idle;
+                attackzone.gotDamaged = false;
             }
         }
         private void Follow()
@@ -193,6 +206,11 @@ namespace monsters
         }
         private void CheckForPlayer()
         {
+            if (monsterhealth <= 0)
+            {
+                timer = 0;
+                currentState = States.Die;           
+            }
             if(agent.isStopped != true)
             {
                 anim = AnimStates.Walk;
@@ -219,6 +237,21 @@ namespace monsters
                 Debug.DrawRay(transform.position, directionToPlayer.normalized);
                 //if (inSight)
                 //    Debug.Log("player sighted");
+            }
+        }
+        public void GetDamage(float damage)
+        {
+            monsterhealth -= damage;
+        }
+        private void Die()
+        {
+            anim = AnimStates.Die;
+            deathtimer += Time.deltaTime;
+            if(deathtimer >= deathtime)
+            {
+                droppedFood.GetComponent<Resource>().food = Random.RandomRange(35, 55);
+                manager.SpawnResources(droppedFood, transform);
+                Destroy(gameObject);
             }
         }
     }

@@ -43,6 +43,7 @@ public class ResourceManager : MonoBehaviour
     {
         GameObject instance = Instantiate(body, position);
         instance.transform.parent = transform;
+        instance.transform.position = position.position;
     }
 
 

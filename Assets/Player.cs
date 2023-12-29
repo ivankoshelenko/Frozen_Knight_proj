@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     private bool attacking = false;
     private float timeToAttack = 0.5f;
     private float timer = 0f;
+    public float attackDamage = 20f;
 
     private bool crafting = false;
     private float craftInterval = 0.25f;
@@ -43,6 +44,7 @@ public class Player : MonoBehaviour
         input.actions["Craft"].performed += Craft_performed;
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
+        attackPosition.GetComponent<AttackZone>().damage = attackDamage;
         attackPosition.transform.localPosition = new Vector3(1.3f, 0, 0);
     }
     PlayerStates CurrentState

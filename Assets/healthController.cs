@@ -93,7 +93,7 @@ namespace resources
             if (playerHealth <= 0)
             {
                 Die();
-                playerHealth = -10f;
+                playerHealth = 100f;
             }
             healthUI.value = playerHealth;
         }

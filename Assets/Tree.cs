@@ -5,7 +5,6 @@ using UnityEngine;
 public class Tree : MonoBehaviour
 {
     public int hitPoints = 1;
-    public Resource resource;
     public GameObject droppedWood;
     public ResourceManager manager;
 

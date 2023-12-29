@@ -46,7 +46,7 @@ public class ResourceManager : MonoBehaviour
     }
 
 
-    public void SpawnCampFire(Transform pos)
+    public bool SpawnCampFire(Transform pos)
     {
         if (wood >= 25)
         {
@@ -54,7 +54,9 @@ public class ResourceManager : MonoBehaviour
             GameObject instance = Instantiate(campFirePrefab, pos);
             instance.transform.parent = transform;
             RefreshIcons();
+            return true;
         }
+        return false;
     }
     public void RefreshIcons()
     {

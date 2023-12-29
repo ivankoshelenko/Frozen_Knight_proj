@@ -84,7 +84,7 @@ namespace resources
             }
         }
 
-        void GetDamage(float damage)
+        public void GetDamage(float damage)
         {
             damaged = true;
             playerHealth -= damage;

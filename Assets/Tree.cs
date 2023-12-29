@@ -11,13 +11,11 @@ public class Tree : MonoBehaviour
 
     private void OnEnable()
     {
-        resource = new Resource();
-        resource.wood = Random.RandomRange(10, 25);
-        Debug.Log(resource.wood);
+
     }
     private void CutDown()
     {
-        droppedWood.GetComponent<Resource>().wood = resource.wood;
+        droppedWood.GetComponent<Resource>().wood = Random.RandomRange(10, 25);
         Transform pos = transform;
         manager.SpawnResources(droppedWood, pos);
         gameObject.SetActive(false);

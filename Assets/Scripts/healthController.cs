@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using resources;
+using UnityEngine.SceneManagement;
 
 namespace resources
 {
     public class healthController : MonoBehaviour
     {
         [Header("Health main parameters")]
-        public float playerHealth = 100.0f;
+        public float playerHealth = maxHealth;
         [SerializeField]
-        private float maxHealth = 100f;
+        public static float maxHealth = 100f;
 
 
         [Header("Health Regen")]
@@ -26,6 +27,8 @@ namespace resources
         private HungerController hunger;
         private ColdController cold;
         public bool recovering = false;
+        private float deathTimer = 0.8f;
+        private bool dying = false;
         void Start()
         {
             hunger = GetComponent<HungerController>();
@@ -38,6 +41,16 @@ namespace resources
 
         void Update()
         {
+            if (dying)
+            {
+                character.input.Disable();
+                PauseGame.pauseInput.Disable();
+                deathTimer = deathTimer - Time.deltaTime;
+                if(deathTimer <= 0)
+                {
+                    SceneManager.LoadScene(3);
+                }
+            }
             if (damaged == true && timeUntillRecovery > 0.01)
             {
                 timeUntillRecovery -= Time.deltaTime;
@@ -101,21 +114,19 @@ namespace resources
         void Die()
         {
             Debug.Log("Death");
-
-            //SceneManager.LoadScene(0);
-        }
+            character.Die();
+            dying = true;
+            
+        //SceneManager.LoadScene(0);
+    }
 
         void UpdateHealth(int value)
         {
             healthUI.value = playerHealth;
-            //if (value == 0)
-            //{
-            //    sliderCanvasGroup.alpha = 0;
-            //}
-            //else
-            //{
-            //    sliderCanvasGroup.alpha = 1;
-            //}
+        }
+        public static void Reset1()
+        {
+            maxHealth = 100f;
         }
     }
 }

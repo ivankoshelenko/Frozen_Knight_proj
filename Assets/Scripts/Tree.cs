@@ -7,10 +7,12 @@ public class Tree : MonoBehaviour
     public int hitPoints = 1;
     public GameObject droppedWood;
     public ResourceManager manager;
+    DeadTreeCounter counter;
+    public bool cutDown = false;
 
     private void OnEnable()
     {
-
+        counter = GetComponentInParent<DeadTreeCounter>();
     }
     private void CutDown()
     {
@@ -25,5 +27,9 @@ public class Tree : MonoBehaviour
         Debug.Log(hitPoints);
         if (hitPoints <= 0)
             CutDown();
+    }
+    private void Reset1()
+    {
+        cutDown = false;
     }
 }

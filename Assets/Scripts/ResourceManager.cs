@@ -12,10 +12,10 @@ public class ResourceManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _woodDisplay;
     [SerializeField] private TextMeshProUGUI _rockDisplay;
     [SerializeField] private TextMeshProUGUI _foodDisplay;
-
     public GameObject player;
     private HungerController hunger;
     public GameObject campFirePrefab;
+    public static float attackDamage = 20f;
     private void Start()
     {
         hunger = player.GetComponent<HungerController>();
@@ -23,6 +23,12 @@ public class ResourceManager : MonoBehaviour
     private void OnEnable()
     {
         RefreshIcons();
+    }
+    public static void Reset1()
+    {
+        wood = 0;
+        rock = 0;
+        food = 0;
     }
     public void AddResource(Resource resource)
     {

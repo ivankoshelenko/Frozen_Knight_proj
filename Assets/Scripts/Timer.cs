@@ -19,6 +19,7 @@ public class Timer : MonoBehaviour
     void Start()
     {
         muffling.alpha = 0.25f;
+        _dayDisplay.text = Day.ToString();
     }
 
     // Update is called once per frame
@@ -40,7 +41,11 @@ public class Timer : MonoBehaviour
         {
             Day += 1;
             _dayDisplay.text = Day.ToString();
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(2);
         }
+    }
+    public static void Reset1()
+    {
+         Day = 1;
     }
 }

@@ -8,13 +8,10 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(Canvas))]
 public class PauseGame : MonoBehaviour
 {
-    /// <summary>
-    /// Должен находиться в Canvas
-    /// </summary>
     public static bool GameIsPaused { get; private set; }
     [SerializeField] private GameObject _pauseMenuUI;
     [SerializeField] public Player character;
-    PlayerInput pauseInput;
+    public static PlayerInput pauseInput;
     [SerializeField] private GameObject firstButton;
 
     private void Awake()
@@ -79,4 +76,8 @@ public class PauseGame : MonoBehaviour
     private void OnEnable() => pauseInput.Enable();
 
     private void OnDisable() => pauseInput.Disable();
+    public static void Reset()
+    {
+
+    }
 }

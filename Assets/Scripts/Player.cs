@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using resources;
+
 public class Player : MonoBehaviour
 {
     public PlayerInput input;
@@ -15,7 +17,7 @@ public class Player : MonoBehaviour
     private bool attacking = false;
     private float timeToAttack = 0.5f;
     private float timer = 0f;
-    public float attackDamage = 20f;
+    
 
     private bool crafting = false;
     private float craftInterval = 0.25f;
@@ -29,7 +31,7 @@ public class Player : MonoBehaviour
     SpriteRenderer sprite;
 
     public ResourceManager resourceManager;
-    public enum PlayerStates { Idle, Run, Strike };
+    public enum PlayerStates { Idle, Run, Strike, Die };
     private void Awake()
     {
         input = new PlayerInput();
@@ -43,7 +45,7 @@ public class Player : MonoBehaviour
         input.Player.Craft.performed += Craft_performed;
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
-        attackPosition.GetComponent<AttackZone>().damage = attackDamage;
+        attackPosition.GetComponent<AttackZone>().damage = ResourceManager.attackDamage;
         attackPosition.transform.localPosition = new Vector3(1.3f, 0, 0);
     }
 
@@ -74,6 +76,10 @@ public class Player : MonoBehaviour
                             canMove = true;
                         //Debug.Log(m_currentState);
                         break;
+                        case PlayerStates.Die:
+                            animator.Play("PlayerDeath");
+                            stateLock = true;
+                            break;
                     }
                 }
             }
@@ -189,11 +195,8 @@ public class Player : MonoBehaviour
         //    KnockBack(enemy.transform);
         //}
     }
-
-    public void KnockBack(Transform point)
+    public void Die()
     {
-        Vector2 force = (transform.position - transform.position).normalized;
-        //rb.AddForce(force * 1000f, ForceMode2D.Impulse);
-        rb.velocity = force * 1000f;
+        CurrentState = PlayerStates.Die;
     }
 }

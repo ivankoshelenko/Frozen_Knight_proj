@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
-    private PlayerInput input;
+    public PlayerInput input;
     Vector2 playerInput_ { get; set; }
     [SerializeField]
     public GameObject attackPosition;
@@ -32,21 +32,21 @@ public class Player : MonoBehaviour
     public enum PlayerStates { Idle, Run, Strike };
     private void Awake()
     {
-        input = GetComponent<PlayerInput>();
+        input = new PlayerInput();
     }
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        input.enabled = true;
         //attackPosition.transform.localPosition = new Vector2(transform.position.x + 1, transform.position.y);
-        input.actions["Eat"].performed += Eat_performed;
-        input.actions["Craft"].performed += Craft_performed;
+        input.Player.Eat.performed += Eat_performed;
+        input.Player.Craft.performed += Craft_performed;
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         attackPosition.GetComponent<AttackZone>().damage = attackDamage;
         attackPosition.transform.localPosition = new Vector3(1.3f, 0, 0);
     }
+
     PlayerStates CurrentState
     {
         set
@@ -97,7 +97,11 @@ public class Player : MonoBehaviour
 
     private void OnEnable()
     {
-        
+        input.Enable();
+    }
+    private void OnDisable()
+    {
+        input.Disable();
     }
 
     // Update is called once per frame
@@ -107,7 +111,7 @@ public class Player : MonoBehaviour
         //Debug.Log(canMove);
         if (canMove)
         {
-            playerInput_ = input.actions["Movement"].ReadValue<Vector2>();
+            playerInput_ = input.Player.Movement.ReadValue<Vector2>();
         }
         else playerInput_ = Vector2.zero;
 
@@ -140,7 +144,7 @@ public class Player : MonoBehaviour
                 sprite.flipX = false;
             else sprite.flipX = true;
         }
-            if (input.actions["Attack"].IsPressed() && !attacking)
+            if (input.Player.Attack.IsPressed() && !attacking)
         {
             
             Attack();
@@ -185,6 +189,7 @@ public class Player : MonoBehaviour
         //    KnockBack(enemy.transform);
         //}
     }
+
     public void KnockBack(Transform point)
     {
         Vector2 force = (transform.position - transform.position).normalized;

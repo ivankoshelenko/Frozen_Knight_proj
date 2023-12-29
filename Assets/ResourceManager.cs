@@ -6,9 +6,9 @@ using resources;
 
 public class ResourceManager : MonoBehaviour
 {
-    public float wood { get; set; }
-    public float rock { get; set; }
-    public float food { get; set; }
+    public static float wood { get; set; }
+    public static float rock { get; set; }
+    public static float food { get; set; }
     [SerializeField] private TextMeshProUGUI _woodDisplay;
     [SerializeField] private TextMeshProUGUI _rockDisplay;
     [SerializeField] private TextMeshProUGUI _foodDisplay;
@@ -19,6 +19,10 @@ public class ResourceManager : MonoBehaviour
     private void Start()
     {
         hunger = player.GetComponent<HungerController>();
+    }
+    private void OnEnable()
+    {
+        RefreshIcons();
     }
     public void AddResource(Resource resource)
     {

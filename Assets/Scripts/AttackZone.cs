@@ -16,7 +16,12 @@ public class AttackZone : MonoBehaviour
         }
         if (other.gameObject.TryGetComponent<MonsterScript>(out var monster))
         {
-            FindObjectOfType<AudioManager>().Play("MushroomDamage");
+            if (other.gameObject.TryGetComponent<Skeleton>(out var skeleton))
+            {
+                FindObjectOfType<AudioManager>().Play("SkeletonDamage");
+            }
+            else
+                FindObjectOfType<AudioManager>().Play("MushroomDamage");
             monster.GetDamage(damage);
             Debug.Log("monsterHit");
         }

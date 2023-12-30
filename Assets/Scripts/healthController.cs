@@ -41,6 +41,7 @@ namespace resources
 
         void Update()
         {
+            UpdateHealth(1);
             if (dying)
             {
                 if(!FindObjectOfType<AudioManager>().isPlaying("PlayerDeath"))

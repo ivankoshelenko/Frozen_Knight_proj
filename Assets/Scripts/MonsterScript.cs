@@ -16,6 +16,9 @@ namespace monsters
         public States currentState;
 
         public Transform[] wayPoints;
+        [SerializeField]
+        public string[] Animations;
+        public string[] Sounds;
 
         public int currentWayPoint;
         public bool inSight;
@@ -68,19 +71,19 @@ namespace monsters
                     {
                         case AnimStates.Idle:
                             //Debug.Log(m_anim);
-                            animator.Play("MushroomIdle");
+                            animator.Play(Animations[0]);
                             break;
                         case AnimStates.Attack:
-                            animator.Play("MushroomAttack");
+                            animator.Play(Animations[1]);
                             //Debug.Log(m_anim);
 
                             break;
                         case AnimStates.Walk:
-                            animator.Play("MushroomRun");
+                            animator.Play(Animations[2]);
                             //Debug.Log(m_anim);
                             break;
                         case AnimStates.Die:
-                            animator.Play("MushroomDeath");
+                            animator.Play(Animations[3]);
                             break;
                     }
                 }
@@ -122,10 +125,10 @@ namespace monsters
                     break;
                 case States.Die:
                     attackzone.gameObject.SetActive(false);
-                    if (FindObjectOfType<AudioManager>().isPlaying("MushroomDamage"))
-                        FindObjectOfType<AudioManager>().Stop("MushroomDamage");
-                    if (!FindObjectOfType<AudioManager>().isPlaying("MushroomDeath"))
-                        FindObjectOfType<AudioManager>().Play("MushroomDeath");
+                    if (FindObjectOfType<AudioManager>().isPlaying(Sounds[0]))
+                        FindObjectOfType<AudioManager>().Stop(Sounds[0]);
+                    if (!FindObjectOfType<AudioManager>().isPlaying(Sounds[1]))
+                        FindObjectOfType<AudioManager>().Play(Sounds[1]);
                     Die();
                     //Debug.Log("Death");
                     break;
@@ -285,14 +288,13 @@ namespace monsters
             deathtimer += Time.deltaTime;
             if(deathtimer >= deathtime)
             {
-                droppedFood.GetComponent<Resource>().food = Random.RandomRange(35, 55);
                 manager.SpawnResources(droppedFood, transform);
                 Destroy(gameObject);
             }
         }
         void PlayAttackSound()
         {
-            FindObjectOfType<AudioManager>().Play("MushroomAttack");
+            FindObjectOfType<AudioManager>().Play(Sounds[2]);
         }
     }
 }

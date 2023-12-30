@@ -8,6 +8,10 @@ public class MainMenu : MonoBehaviour
 {
     public GameObject mainFirstButton,guideFirstButton, settingsFirstButton;
     public GameObject settingsPanel, guidePanel;
+    public void Start()
+    {
+        //FindObjectOfType<AudioManager>().Play("MainTheme");
+    }
     public void StartGame()
     {
         SceneManager.LoadSceneAsync(1);

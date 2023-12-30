@@ -43,6 +43,8 @@ namespace resources
         {
             if (dying)
             {
+                if(!FindObjectOfType<AudioManager>().isPlaying("PlayerDeath"))
+                    FindObjectOfType<AudioManager>().Play("PlayerDeath");
                 character.input.Disable();
                 PauseGame.pauseInput.Disable();
                 deathTimer = deathTimer - Time.deltaTime;

@@ -27,6 +27,12 @@ public class Timer : MonoBehaviour
     void Update()
     {
         _timeDisplay.text = ((int)(dayDuration - Time.timeSinceLevelLoad)).ToString();
+        if(dayDuration - Time.timeSinceLevelLoad <= 20)
+        {
+            GetComponent<AudioSource>().Stop();
+            if (!FindObjectOfType<AudioManager>().isPlaying("StrongBlizzard"))
+                FindObjectOfType<AudioManager>().Play("StrongBlizzard");
+        }
 
         if (dayDuration - Time.timeSinceLevelLoad <= 20 && !castle.isSecure)
         {
@@ -38,7 +44,7 @@ public class Timer : MonoBehaviour
             muffling.alpha -= 0.04f * Time.deltaTime;
         }
 
-        if (dayDuration - Time.timeSinceLevelLoad <= 0 && castle.isSecure)
+        if (dayDuration - Time.timeSinceLevelLoad <= 0 && castle.isSecure || dayDuration - Time.timeSinceLevelLoad <= 15 && muffling.alpha <= 0.26f)
         {
             Day += 1;
             _dayDisplay.text = Day.ToString();

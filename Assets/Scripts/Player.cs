@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
     SpriteRenderer sprite;
 
     public ResourceManager resourceManager;
+    AudioSource running;
     public enum PlayerStates { Idle, Run, Strike, Die };
     private void Awake()
     {
@@ -47,6 +48,7 @@ public class Player : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
         attackPosition.GetComponent<AttackZone>().damage = ResourceManager.attackDamage;
         attackPosition.transform.localPosition = new Vector3(1.3f, 0, 0);
+        running = GetComponent<AudioSource>();
     }
 
     PlayerStates CurrentState
@@ -60,11 +62,14 @@ public class Player : MonoBehaviour
                     switch (m_currentState)
                     {
                         case PlayerStates.Idle:
-                        //Debug.Log(m_currentState);
-                        animator.Play("Idle");
+                            //Debug.Log(m_currentState);
+                            FindObjectOfType<AudioManager>().Stop("Run");
+                            animator.Play("Idle");
                             canMove = true;
                             break;
-                        case PlayerStates.Strike:      
+                        case PlayerStates.Strike:
+                            FindObjectOfType<AudioManager>().Play("Sword");
+                            running.Stop();
                             animator.Play("KnightStrike");
                             canMove = false;
                             stateLock = true;
@@ -72,6 +77,7 @@ public class Player : MonoBehaviour
                         
                             break;
                         case PlayerStates.Run:
+                            FindObjectOfType<AudioManager>().Play("Run");
                             animator.Play("KnightRun");
                             canMove = true;
                         //Debug.Log(m_currentState);
@@ -83,6 +89,10 @@ public class Player : MonoBehaviour
                     }
                 }
             }
+        }
+        get
+        {
+            return PlayerStates.Run;
         }
     }
     private void Craft_performed(InputAction.CallbackContext obj)
@@ -159,11 +169,16 @@ public class Player : MonoBehaviour
         }
         if (playerInput_ != Vector2.zero && !attacking)
         {
+            if(!running.isPlaying)
+            {
+                running.Play();
+            }
             CurrentState = PlayerStates.Run;
         }
         else if (!attacking)
         {
             CurrentState = PlayerStates.Idle;
+            running.Stop();
         }
     }
 

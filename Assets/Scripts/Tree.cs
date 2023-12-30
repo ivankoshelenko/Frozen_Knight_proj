@@ -13,7 +13,7 @@ public class Tree : MonoBehaviour
 
     private void Start()
     {
-        manager = Object.FindObjectOfType<ResourceManager>().GetComponent<ResourceManager>();
+        //manager = Object.FindObjectOfType<ResourceManager>().GetComponent<ResourceManager>();
     }
     private void OnEnable()
     {
@@ -26,6 +26,7 @@ public class Tree : MonoBehaviour
         manager = Object.FindObjectOfType<ResourceManager>().GetComponent<ResourceManager>();
         droppedWood.GetComponent<Resource>().wood = Random.RandomRange(10, 25);
         Transform pos = transform;
+        pos.position = new Vector3(transform.position.x,transform.position.y -1.5f, transform.position.z);
         gameObject.SetActive(false);
         manager.SpawnResources(droppedWood, pos);  
     }

@@ -6,6 +6,7 @@ using UnityEngine.AI;
 namespace monsters
 {
     public enum AnimStates {Idle, Walk, Attack, Die}
+    public enum SoundStates {Walk,Attack,Die,Prepare}
 
     public class MonsterScript : MonoBehaviour
     {
@@ -39,7 +40,24 @@ namespace monsters
         public float deathtime = 0.5f;
         public GameObject droppedFood;
         public ResourceManager manager;
-
+        private SoundStates m_sound;
+        public AudioSource footsteps;
+        
+        private SoundStates sound
+        {
+            set
+            {
+                m_sound = value;
+                switch(m_sound)
+                {
+                    case SoundStates.Attack:
+                    {
+                       PlayAttackSound();
+                       break;
+                    }
+                }
+            }
+        }
         private AnimStates anim
         { 
             set
@@ -78,17 +96,12 @@ namespace monsters
             agent.updateRotation = false;
             agent.updateUpAxis = false;
         }
-        private void OnnTriggerEnter2D(Collision2D other)
-        {
-            //if (!other.gameObject.TryGetComponent<Player>(out var player)) return;
-            //{
-            //    Debug.Log("hitPlayer");
-            //    player.KnockBack(transform);
-            //}
-        }
+
         void Start()
         {
             attackzone.damage = monsterDamage;
+            footsteps = GetComponent<AudioSource>();
+            //footsteps.Play();
         }
         private void OnEnable()
         {
@@ -109,6 +122,10 @@ namespace monsters
                     break;
                 case States.Die:
                     attackzone.gameObject.SetActive(false);
+                    if (FindObjectOfType<AudioManager>().isPlaying("MushroomDamage"))
+                        FindObjectOfType<AudioManager>().Stop("MushroomDamage");
+                    if (!FindObjectOfType<AudioManager>().isPlaying("MushroomDeath"))
+                        FindObjectOfType<AudioManager>().Play("MushroomDeath");
                     Die();
                     //Debug.Log("Death");
                     break;
@@ -174,6 +191,7 @@ namespace monsters
                 freezeRotation = false;
                 anim = AnimStates.Idle;
                 attackzone.gotDamaged = false;
+                footsteps.Play();
             }
         }
         private void Follow()
@@ -182,6 +200,8 @@ namespace monsters
             {
                 agent.ResetPath();
                 currentState = States.Attack;
+                sound = SoundStates.Attack;
+                footsteps.Stop();
             }
             else
             {
@@ -218,15 +238,31 @@ namespace monsters
             else if(!ready)anim = AnimStates.Idle;
             //Debug.Log(transform.rotation.y);
             //Debug.Log(mirrored);
-            if ((target.position - transform.position).x <= 0 && mirrored == false && !freezeRotation)
+            if (currentState != States.Patrol)
             {
-                transform.Rotate(new Vector3(0, 180f, 0));
-                mirrored = true;
+                if ((target.position - transform.position).x <= 0 && mirrored == false && !freezeRotation)
+                {
+                    transform.Rotate(new Vector3(0, 180f, 0));
+                    mirrored = true;
+                }
+                else if ((target.position - transform.position).x > 0 && mirrored == true && !freezeRotation)
+                {
+                    mirrored = false;
+                    transform.Rotate(new Vector3(0, 180f, 0));
+                }
             }
-            else if ((target.position - transform.position).x > 0 && mirrored == true && !freezeRotation)
+            else
             {
-                mirrored = false;
-                transform.Rotate(new Vector3(0, 180f, 0));
+                if (agent.destination.x - transform.position.x <= 0 && mirrored == false)
+                {
+                    transform.Rotate(new Vector3(0, 180f, 0));
+                    mirrored = true;
+                }
+                else if(agent.destination.x - transform.position.x > 0 && mirrored == true)
+                {
+                    mirrored = false;
+                    transform.Rotate(new Vector3(0, 180f, 0));
+                }
             }
             directionToPlayer = (target.position - transform.position).normalized;
             RaycastHit2D hitInfo;
@@ -253,6 +289,10 @@ namespace monsters
                 manager.SpawnResources(droppedFood, transform);
                 Destroy(gameObject);
             }
+        }
+        void PlayAttackSound()
+        {
+            FindObjectOfType<AudioManager>().Play("MushroomAttack");
         }
     }
 }

@@ -538,6 +538,7 @@ GameObject:
   - component: {fileID: 1424401442}
   - component: {fileID: 1424401441}
   - component: {fileID: 1424401440}
+  - component: {fileID: 1424401444}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -660,6 +661,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -10}
   m_SizeDelta: {x: 188.7388, y: 61.1337}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &1424401444
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1424401439}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1606193883
 GameObject:
   m_ObjectHideFlags: 0

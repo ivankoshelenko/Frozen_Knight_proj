@@ -20,6 +20,7 @@ public class Timer : MonoBehaviour
     {
         muffling.alpha = 0.25f;
         _dayDisplay.text = Day.ToString();
+        //Object.FindObjectOfType<DontDestroy>().GetComponent<DontDestroy>().gameObject.SetActive(true);
     }
 
     // Update is called once per frame
@@ -43,6 +44,10 @@ public class Timer : MonoBehaviour
             _dayDisplay.text = Day.ToString();
             SceneManager.LoadScene(2);
         }
+    }
+    private void OnDisable()
+    {
+        //Object.FindObjectOfType<DontDestroy>().GetComponent<DontDestroy>().gameObject.SetActive(false);
     }
     public static void Reset1()
     {

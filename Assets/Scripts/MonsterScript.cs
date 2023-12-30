@@ -110,7 +110,7 @@ namespace monsters
                 case States.Die:
                     attackzone.gameObject.SetActive(false);
                     Die();
-                    Debug.Log("Death");
+                    //Debug.Log("Death");
                     break;
             }
         }

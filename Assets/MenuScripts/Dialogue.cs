@@ -25,7 +25,7 @@ public class Dialogue : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        //Object.FindObjectOfType<DontDestroy>().GetComponent<DontDestroy>().gameObject.SetActive(false);
     }
     void Awake()
     {
@@ -45,8 +45,8 @@ public class Dialogue : MonoBehaviour
         firstButton.onClick.RemoveAllListeners();
         mainDialogue.text = "Мы голодны, дайте нам еды";
         firstButton.GetComponentInChildren<TextMeshProUGUI>().text = "Я дам вам 50 еды";
-        firstButton.onClick.AddListener(GiveFood);
         firstButton.onClick.AddListener(DisableThirdButton);
+        firstButton.onClick.AddListener(GiveFood);       
         if (ResourceManager.food < 50)
         {
             firstButton.enabled = false;
@@ -134,6 +134,7 @@ public class Dialogue : MonoBehaviour
         RefreshButtons();
         secondButton.gameObject.SetActive(true);
         firstButton.onClick.RemoveAllListeners();
+        secondButton.onClick.RemoveAllListeners();
         karma += 2;
         ResourceManager.food -= 50;
         if (ResourceManager.wood <= 20)
@@ -162,9 +163,8 @@ public class Dialogue : MonoBehaviour
         if (karma >= -2)
         {
             mainDialogue.text = "Ох ну и тяжело нам будет выжить завтра";
-            firstButton.GetComponentInChildren<TextMeshProUGUI>().text = "Могу ли я улучшить с помощью неё своё оружие?";
+            firstButton.GetComponentInChildren<TextMeshProUGUI>().text = "Завтра постараюсь помочь";
             firstButton.onClick.AddListener(UpgradeSword);
-            GainResources(0, 0, 30f);
         }
         else
         {
@@ -270,7 +270,8 @@ public class Dialogue : MonoBehaviour
     }
     public void NextDay()
     {
-        SceneManager.LoadSceneAsync(1);
+        //Object.FindObjectOfType<DontDestroy>().GetComponent<DontDestroy>().gameObject.SetActive(true);
+        SceneManager.LoadSceneAsync(1);     
     }
     // Update is called once per frame
     void Update()

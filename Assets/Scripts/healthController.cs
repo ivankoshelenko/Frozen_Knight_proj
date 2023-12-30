@@ -48,6 +48,7 @@ namespace resources
                 deathTimer = deathTimer - Time.deltaTime;
                 if(deathTimer <= 0)
                 {
+                    //Destroy(Object.FindObjectOfType<DontDestroy>().GetComponent<DontDestroy>().gameObject);
                     SceneManager.LoadScene(3);
                 }
             }

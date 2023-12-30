@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Tree : MonoBehaviour
 {
@@ -10,16 +11,23 @@ public class Tree : MonoBehaviour
     DeadTreeCounter counter;
     public bool cutDown = false;
 
+    private void Start()
+    {
+        manager = Object.FindObjectOfType<ResourceManager>().GetComponent<ResourceManager>();
+    }
     private void OnEnable()
     {
+        manager = Object.FindObjectOfType<ResourceManager>().GetComponent<ResourceManager>();
         counter = GetComponentInParent<DeadTreeCounter>();
     }
+ 
     private void CutDown()
     {
+        manager = Object.FindObjectOfType<ResourceManager>().GetComponent<ResourceManager>();
         droppedWood.GetComponent<Resource>().wood = Random.RandomRange(10, 25);
         Transform pos = transform;
-        manager.SpawnResources(droppedWood, pos);
         gameObject.SetActive(false);
+        manager.SpawnResources(droppedWood, pos);  
     }
     public void GetChopped()
     {

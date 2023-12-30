@@ -200,7 +200,8 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent<Resource>(out var resource))
         {
-            Debug.Log("found wood");
+            Debug.Log("found resource");
+            FindObjectOfType<AudioManager>().Play("PickUp");
             resourceManager.AddResource(resource);
             Destroy(other.gameObject);
         }

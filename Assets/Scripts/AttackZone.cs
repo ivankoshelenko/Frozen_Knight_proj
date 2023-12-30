@@ -23,7 +23,7 @@ public class AttackZone : MonoBehaviour
         if (other.gameObject.TryGetComponent<Rock>(out var rock))
         {
             rock.GetChopped();
-            FindObjectOfType<AudioManager>().Play("PlayerAttack");
+            FindObjectOfType<AudioManager>().Play("Rock");
             Debug.Log("Chop");
         }
     }

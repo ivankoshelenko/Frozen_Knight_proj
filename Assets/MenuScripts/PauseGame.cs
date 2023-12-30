@@ -13,6 +13,8 @@ public class PauseGame : MonoBehaviour
     [SerializeField] public Player character;
     public static PlayerInput pauseInput;
     [SerializeField] private GameObject firstButton;
+    [SerializeField] private GameObject guideFirstButton;
+    [SerializeField] private GameObject settingsFirstButton;
 
     private void Awake()
     {
@@ -79,5 +81,29 @@ public class PauseGame : MonoBehaviour
     public static void Reset()
     {
 
+    }
+    public void OpenSettings()
+    {
+        EventSystem.current.SetSelectedGameObject(null);
+
+        EventSystem.current.SetSelectedGameObject(settingsFirstButton);
+    }
+    public void CloseSettings()
+    {
+        EventSystem.current.SetSelectedGameObject(null);
+
+        EventSystem.current.SetSelectedGameObject(firstButton);
+    }
+    public void OpenGuide()
+    {
+        EventSystem.current.SetSelectedGameObject(null);
+
+        EventSystem.current.SetSelectedGameObject(guideFirstButton);
+    }
+    public void CloseGuide()
+    {
+        EventSystem.current.SetSelectedGameObject(null);
+
+        EventSystem.current.SetSelectedGameObject(firstButton);
     }
 }

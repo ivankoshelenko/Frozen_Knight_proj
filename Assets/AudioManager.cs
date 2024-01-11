@@ -9,7 +9,9 @@ public class AudioManager : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
-        foreach(Sound s in sounds)
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        foreach (Sound s in sounds)
         {
             s.source = gameObject.AddComponent<AudioSource>();
             s.source.clip = s.clip;

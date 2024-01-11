@@ -60,7 +60,7 @@ namespace resources
             {
                 freezeState = freezeStates.warm;
             }
-            if (cold > 30 && cold < 80)
+            if (cold > 30 && cold < 99)
                 freezeState = freezeStates.cold;
             if (value == 0)
             {

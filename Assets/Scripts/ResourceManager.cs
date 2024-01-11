@@ -6,9 +6,9 @@ using resources;
 
 public class ResourceManager : MonoBehaviour
 {
-    public static float wood { get; set; }
-    public static float rock { get; set; }
-    public static float food { get; set; }
+    [SerializeField] public static float wood { get; set; }
+    [SerializeField] public static float rock { get; set; }
+    [SerializeField] public static float food { get; set; }
     [SerializeField] private TextMeshProUGUI _woodDisplay;
     [SerializeField] private TextMeshProUGUI _rockDisplay;
     [SerializeField] private TextMeshProUGUI _foodDisplay;

@@ -12,6 +12,7 @@ public class ReturnFromDeath : MonoBehaviour
         Dialogue.Reset1();
         healthController.Reset1();
         Timer.Reset1();
+        Destroy(FindObjectOfType<DeadTreeCounter>().gameObject);
         SceneManager.LoadSceneAsync(0);
     }
 }

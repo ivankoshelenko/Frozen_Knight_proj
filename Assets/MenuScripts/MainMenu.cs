@@ -11,6 +11,8 @@ public class MainMenu : MonoBehaviour
     public void Start()
     {
         //FindObjectOfType<AudioManager>().Play("MainTheme");
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
     public void StartGame()
     {

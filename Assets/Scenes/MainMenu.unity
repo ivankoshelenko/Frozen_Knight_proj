@@ -1802,6 +1802,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GuidePanel
       objectReference: {fileID: 0}
+    - target: {fileID: 5138375207112654274, guid: 01e137dd0f3001543b64dc5ba81d3591, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5138375207112654275, guid: 01e137dd0f3001543b64dc5ba81d3591, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

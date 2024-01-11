@@ -13,13 +13,13 @@ public class Dialogue : MonoBehaviour
     public Button firstButton, secondButton, thirdButton;
 
     public TextMeshProUGUI mainDialogue;
-    public static ResourceManager resources;
     public static int karma;
     public int giveNothing;
     [SerializeField] private TextMeshProUGUI _woodDisplay;
     [SerializeField] private TextMeshProUGUI _rockDisplay;
     [SerializeField] private TextMeshProUGUI _foodDisplay;
     [SerializeField] private Slider karmaSlider;
+    float rock;
 
     public enum Stages {peopleFirst, upgradeFirst,peopleSecond,upgradeSecond}
     // Start is called before the first frame update
@@ -30,6 +30,8 @@ public class Dialogue : MonoBehaviour
     void Awake()
     {
         firstButton.onClick.AddListener(ChoosePeople); //subscribe to the onClick event
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
     void RefreshButtons()
     {
@@ -39,6 +41,7 @@ public class Dialogue : MonoBehaviour
     }
     public void ChoosePeople()
     {
+        rock = ResourceManager.rock;
         secondButton.gameObject.SetActive(true);
         RefreshButtons();
         thirdButton.gameObject.SetActive(true);
@@ -182,8 +185,9 @@ public class Dialogue : MonoBehaviour
         if (karma >= 1)
         {
             mainDialogue.text = "Благодаря вам мы сможет ночевать в тепле. Возьмите в плату за ваше милосердие 30 руды";
-            firstButton.GetComponentInChildren<TextMeshProUGUI>().text = "С радостью приму 30 руды. Могу ли я улучшить с помощью неё своё оружие?";
+            firstButton.GetComponentInChildren<TextMeshProUGUI>().text = "Могу ли я улучшить с помощью неё своё оружие?";
             GainResources(0, 0, 30f);
+            rock += 30f;
         }
         else
         {
@@ -220,8 +224,8 @@ public class Dialogue : MonoBehaviour
         mainDialogue.text = "Заплатив 15 руды мы сможем улучшить ваш меч. (5 урона)";
         firstButton.GetComponentInChildren<TextMeshProUGUI>().text = "Заплатить 15 руды";
         
-        firstButton.onClick.AddListener(UpgradeArmor);
         firstButton.onClick.AddListener(PayForSword);
+        firstButton.onClick.AddListener(UpgradeArmor);
         if (ResourceManager.rock < 15)
         {
             firstButton.enabled = false;
@@ -234,10 +238,13 @@ public class Dialogue : MonoBehaviour
         secondButton.GetComponentInChildren<TextMeshProUGUI>().text = "Я не могу заплатить";
 
         secondButton.onClick.AddListener(UpgradeArmor);
+        Debug.Log(ResourceManager.rock);
     }
     public void PayForSword()
     {
         LoseResources(0, 0, 15);
+        rock -= 15f;
+        Debug.Log(ResourceManager.rock);
         ResourceManager.attackDamage += 5f;
     }
     public void UpgradeArmor()
@@ -245,16 +252,12 @@ public class Dialogue : MonoBehaviour
         RefreshButtons();
         DisableThirdButton();
         firstButton.onClick.RemoveAllListeners();
-        mainDialogue.text = "Заплатив 45 руды мы сможем улучшить ваши доспехи. (20 здоровья)";
+        mainDialogue.text = "Заплатите 45 руды  чтоб мы смогли улучшить ваши доспехи. (20 здоровья)";
         firstButton.GetComponentInChildren<TextMeshProUGUI>().text = "Заплатить 45 руды";
 
         secondButton.gameObject.SetActive(true);
-        if(ResourceManager.rock <45)
-        {
-            firstButton.enabled = false;
-            EventSystem.current.SetSelectedGameObject(null);
-            EventSystem.current.SetSelectedGameObject(secondButton.gameObject);
-        }
+        Debug.Log(ResourceManager.rock);
+
         secondButton.onClick.RemoveAllListeners();
         secondButton.GetComponentInChildren<TextMeshProUGUI>().text = "Я не могу заплатить";
         secondButton.onClick.AddListener(NextDay);
@@ -262,11 +265,23 @@ public class Dialogue : MonoBehaviour
 
         firstButton.onClick.AddListener(PayForArmor);
         firstButton.onClick.AddListener(NextDay);
+        Debug.Log(ResourceManager.rock - 45 < 0);
+        if (ResourceManager.rock - 45 < 0)
+        {
+            firstButton.enabled = false;
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(secondButton.gameObject);
+        }
     }
     void PayForArmor()
     {
-        ResourceManager.rock -= 45;
-        healthController.maxHealth += 20f;
+        if (ResourceManager.rock < 45)
+            NextDay();
+        else
+        {
+            ResourceManager.rock -= 45;
+            healthController.maxHealth += 20f;
+        }
     }
     public void NextDay()
     {
@@ -281,7 +296,7 @@ public class Dialogue : MonoBehaviour
         _foodDisplay.text = (((int)ResourceManager.food).ToString());
         karmaSlider.value = karma;
         if (karma <= -5)
-            Debug.Log("Lose");
+            SceneManager.LoadSceneAsync(4);
     }
     public static void Reset1()
     {

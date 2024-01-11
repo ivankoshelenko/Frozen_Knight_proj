@@ -44,11 +44,15 @@ public class Timer : MonoBehaviour
             muffling.alpha -= 0.04f * Time.deltaTime;
         }
 
-        if (dayDuration - Time.timeSinceLevelLoad <= 0 && castle.isSecure || dayDuration - Time.timeSinceLevelLoad <= 15 && muffling.alpha <= 0.26f)
+        if ((dayDuration - Time.timeSinceLevelLoad <= 0  || dayDuration - Time.timeSinceLevelLoad <= 15 && muffling.alpha <= 0.26f) && castle.isSecure)
         {
             Day += 1;
             _dayDisplay.text = Day.ToString();
             SceneManager.LoadScene(2);
+        }
+        else if ( dayDuration - Time.timeSinceLevelLoad <= 0)
+        {
+            SceneManager.LoadScene(3);
         }
     }
     private void OnDisable()

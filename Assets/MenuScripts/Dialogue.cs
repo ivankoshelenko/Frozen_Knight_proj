@@ -297,6 +297,17 @@ public class Dialogue : MonoBehaviour
         karmaSlider.value = karma;
         if (karma <= -5)
             SceneManager.LoadSceneAsync(4);
+        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(2))
+        {
+            if (firstButton.enabled)
+                EventSystem.current.SetSelectedGameObject(firstButton.gameObject);
+            else
+            if (secondButton.enabled)
+                EventSystem.current.SetSelectedGameObject(secondButton.gameObject);
+            else
+            if (thirdButton.enabled)    
+            EventSystem.current.SetSelectedGameObject(thirdButton.gameObject);
+        }
     }
     public static void Reset1()
     {

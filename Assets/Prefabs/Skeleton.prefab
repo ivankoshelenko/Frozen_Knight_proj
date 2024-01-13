@@ -384,7 +384,7 @@ MonoBehaviour:
   attacktime: 2
   ready: 0
   attacks: 0
-  monsterDamage: 15
+  monsterDamage: 20
   attackzone: {fileID: 8466322403405210767}
   animator: {fileID: 1535364835876411187}
   monsterhealth: 100
